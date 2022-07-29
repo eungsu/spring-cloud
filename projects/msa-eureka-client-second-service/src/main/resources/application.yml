@@ -1,0 +1,16 @@
+server:
+  port: 0
+
+### spring.application.name은 서비스 디스커버리에 등록할 클라이언트 서비스 이름이다.
+spring:
+  application:
+    name: msa-eureka-client-second-service
+    
+### eureka.client.service-url.defaultZone은 클라이언트와 통신할 디스커버리 서버 주소를 설정한다.
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      
