@@ -1,3 +1,6 @@
+server:
+  port: 0
+
 ### spring.application.name은 서비스 디스커버리에 등록할 클라이언트 서비스 이름이다.
 spring:
   application:
