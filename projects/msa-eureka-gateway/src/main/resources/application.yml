@@ -1,0 +1,32 @@
+server:
+  port: 8080
+  
+### spring.application.name
+###   유레카 서버에 등록되는 서비스이름이다.
+### spring.cloud.gateway.routes
+###   라우팅 정보를 설정한다. 응답을 보낼 목적지 URI, 필터 항목을 식별하기 위한 ID로  구성된다.
+### spring.cloud.gateway.routes.predicates
+###   요청을 처리하기 전 HTTP 요청이 정의된 조건에 부합하는지 검사한다.
+spring:
+  application:
+    name: msa-eureka-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: first-service
+        uri: lb://MSA-EUREKA-CLIENT-FIRST-SERVICE
+        predicates:
+        - Path=/first-service/**
+      - id: second-service
+        uri: lb://MSA-EUREKA-CLIENT-SECOND-SERVICE
+        predicates:
+        - Path=/second-service/**
+          
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      
