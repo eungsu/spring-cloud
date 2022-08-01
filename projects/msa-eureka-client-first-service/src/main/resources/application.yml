@@ -1,6 +1,11 @@
-server:
-  port: 8081
+### 포트번호 고정
+#server:
+#  port: 8081
 
+### 로드밸런스 테스트를 위해서 포트번호를 랜덤하게 설정한다.
+server:
+  port: 0
+  
 ### spring.application.name은 서비스 디스커버리에 등록할 클라이언트 서비스 이름이다.
 spring:
   application:
@@ -13,4 +18,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
-      
+### 로드밸런스 테스트를 위해서 각 애플리케이션 인스턴스 아이디를 식별하기 위한 설정을 추가한다.
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}    
