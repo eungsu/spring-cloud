@@ -7,6 +7,13 @@ server:
 ###   라우팅 정보를 설정한다. 응답을 보낼 목적지 URI, 필터 항목을 식별하기 위한 ID로  구성된다.
 ### spring.cloud.gateway.routes.predicates
 ###   요청을 처리하기 전 HTTP 요청이 정의된 조건에 부합하는지 검사한다.
+### spring.cloud.gateway.default-filters
+###   글로벌 필터를 정의한다.
+### spring.cloud.gateway.default-filters.name
+###   글로벌 필터의 이름을 지정한다.
+### spring.cloud.gateway.default-filters.args
+###   글로벌 필터의 Config객체에 전달할 값을 설정한다.
+###   args의 baseMessage, preLogger, postLogger은 GlobalFilte.Config객체의 멤버변수 이름이다.
 ### spring.cloud.gateway.routes.filters
 ###   마이크로서비스 전/후에 실행할 작업이 구현된 필터를 지정한다.
 spring:
@@ -14,6 +21,12 @@ spring:
     name: msa-eureka-gateway
   cloud:
     gateway:
+      default-filters:
+      - name: GlobalFilter
+        args:
+          baseMessage: Spring Cloud Gateway Global Filter가 실행되었습니다.
+          preLogger: true
+          postLogger: true
       routes:
       - id: first-service
         uri: lb://MSA-EUREKA-CLIENT-FIRST-SERVICE
