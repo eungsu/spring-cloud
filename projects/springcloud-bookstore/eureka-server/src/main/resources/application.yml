@@ -5,9 +5,13 @@ server:
 # 마이크로서비스 애플리케이션에서 이 애플리케이션을 식별하는 이름
 spring:
   application:
-    name: bookstore-eureka-server
+    name: eureka-server
     
 # 이 애플리케이션은 유레카서버이기 때문에 유레카 클라이언트로 등록시키지 않고, 레지스트리 정보를 요청하지 않는다.
+# register-with-eureka는 유레카 서버(레지스트리)에 이 애플리케이션을 유레카 클라이언트로 등록할지 여부를 지정한다.
+# 이 애플리케이션은 유레카서버(레지스트리)로 동작하기 때문에 레지스트리에 등록할 필요가 없다.
+# fetch-registry는 레지스트리에서 정보를 가져올지 여부를 지정한다.
+# 이 애플리케이션은 유레카서버(레지스트리)로 동작하기 때문에 레지스트리 정보를 가져올 필요가 없다.
 eureka:
   client:
     register-with-eureka: false
