@@ -4,8 +4,6 @@ import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
-import com.example.dto.UserDto;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,14 +24,4 @@ public class User {
 	private Date createdDate;
 	private Date updatedDate;
 	private String role;
-	
-	public static User createUser(UserDto userDto) {
-		User user = new User();
-		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getEncryptedPassword());
-		user.setName(userDto.getName());
-		user.setTel(userDto.getTel());
-		
-		return user;
-	}
 }

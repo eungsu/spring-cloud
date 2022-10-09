@@ -9,9 +9,9 @@ import lombok.ToString;
 @ToString
 public class UserDto {
 
+	private int id;
 	private String email;
 	private String password;
 	private String name;
 	private String tel;
-	private String encryptedPassword;
 }

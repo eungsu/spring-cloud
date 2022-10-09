@@ -19,7 +19,8 @@ public class UserServicImpl implements UserService {
 	public UserDto createUser(UserDto userDto) {
 		User user = ModelMapperUtil.map(userDto, User.class);
 		userMapper.insertUser(user);
-		
+		userDto.setId(user.getId());
+
 		return userDto;
 	}
 }
