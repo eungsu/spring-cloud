@@ -26,7 +26,6 @@ public class UserController {
 		UserDto userDto = ModelMapperUtil.map(userRequest, UserDto.class);
 		userDto = userService.createUser(userDto);
 		
-		
 		return ResponseEntity.ok(new ResponseData(userDto));
 	}
 	
