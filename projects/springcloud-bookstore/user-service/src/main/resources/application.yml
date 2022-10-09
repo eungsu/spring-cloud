@@ -2,7 +2,12 @@
 # Random 포트를 사용하면 같은 서비스를 여러 개 실행시켰을 때 포트 충돌을 회피할 수 있다.
 server:
   port: 0
-  
+
+logging:
+  level:
+    root: info
+    '[com.example.mapper]': trace
+
 # 애플리케이션의 이름을 지정한다.
 spring:
   application:
@@ -12,6 +17,17 @@ spring:
     url: jdbc:oracle:thin:@localhost:1521:xe
     username: hta
     password: zxcv1234 
+
+# 마이바티스 설정
+# type-aliases-package는 마이바티스가 사용하는 
+mybatis:
+  type-aliases-package: com.example.vo
+  configuration:
+    jdbc-type-for-null: null
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+  mapper-locations:
+  - mybatis/mappers/*.xml
+  
 
 # Random 포트 사용으로 같은 서비스를 여러개 실행할 경우 각각의 인스턴스를 구분하기 위해서 인스턴스 정보를 설정한다.
 # instance-id는 유레카 서버가 인식할 인스턴스 아이디를 지정한다. 유레카서버 대시보드에서 서비스를 식별할 수 있게 한다.
