@@ -1,4 +1,4 @@
-package com.example.vo.web.controller;
+package com.example.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dto.UserDto;
 import com.example.service.UserService;
 import com.example.util.ModelMapperUtil;
-import com.example.vo.web.request.ResponseData;
-import com.example.vo.web.request.UserRequest;
+import com.example.vo.RequestUser;
+import com.example.vo.ResponseUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,11 +22,12 @@ public class UserController {
 	private final UserService userService;
 	
 	@PostMapping
-	public ResponseEntity<ResponseData> createUser(@RequestBody UserRequest userRequest) {
-		UserDto userDto = ModelMapperUtil.map(userRequest, UserDto.class);
+	public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser requestUser) {
+		UserDto userDto = ModelMapperUtil.map(requestUser, UserDto.class);
 		userDto = userService.createUser(userDto);
+		ResponseUser responseUser = ModelMapperUtil.map(userDto, ResponseUser.class);
 		
-		return ResponseEntity.ok(new ResponseData(userDto));
+		return ResponseEntity.ok(responseUser);
 	}
 	
 }

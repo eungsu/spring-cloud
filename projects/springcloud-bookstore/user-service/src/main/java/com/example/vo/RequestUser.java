@@ -1,13 +1,11 @@
-package com.example.vo.web.request;
+package com.example.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-public class UserRequest {
+public class RequestUser {
 
 	private String email;
 	private String password;

@@ -1,15 +1,13 @@
-package com.example.dto;
+package com.example.vo;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDto {
+public class ResponseUser {
 
 	private int id;
 	private String email;
-	private String password;
 	private String name;
-	private String tel;
 }
