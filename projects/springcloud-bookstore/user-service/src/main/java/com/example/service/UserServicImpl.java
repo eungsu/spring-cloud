@@ -1,5 +1,6 @@
 package com.example.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.UserDto;
@@ -14,10 +15,12 @@ import lombok.RequiredArgsConstructor;
 public class UserServicImpl implements UserService {
 
 	private final UserMapper userMapper;
+	private final PasswordEncoder passwordEncoder;
 	
 	@Override
 	public UserDto createUser(UserDto userDto) {
 		User user = ModelMapperUtil.map(userDto, User.class);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userMapper.insertUser(user);
 		userDto.setId(user.getId());
 
