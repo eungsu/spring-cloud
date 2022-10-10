@@ -15,7 +15,7 @@ import com.example.vo.ResponseUser;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/user-service/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 

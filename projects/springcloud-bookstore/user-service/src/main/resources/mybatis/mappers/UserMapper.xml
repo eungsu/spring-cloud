@@ -12,5 +12,23 @@
 		values
 		(#{id}, #{email}, #{password}, #{name}, #{tel})
 	</insert>
+	
+	<select id="getUserByEmail" parameterType="string" resultType="User">
+		select 
+			user_id as id,
+			user_email as email,
+			user_password as password,
+			user_name as name,
+			user_tel as tel,
+			user_point as point,
+			user_disabled as disabled,
+			user_created_date as createdDate,
+			user_updated_date as updatedDate,
+			user_role as "role"
+		from
+			users
+		where
+			user_email = #{value}
+	</select>
 </mapper>
 

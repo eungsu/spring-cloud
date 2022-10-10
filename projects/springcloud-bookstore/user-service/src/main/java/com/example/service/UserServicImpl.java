@@ -1,5 +1,7 @@
 package com.example.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +27,20 @@ public class UserServicImpl implements UserService {
 		userDto.setId(user.getId());
 
 		return userDto;
+	}
+	
+	@Override
+	public User getUserByEmail(String email) {
+		return userMapper.getUserByEmail(email);
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		User user = userMapper.getUserByEmail(email);
+		if (user == null) {
+			throw new UsernameNotFoundException(email);
+		}
+		
+		return user.getUserDetails();
 	}
 }

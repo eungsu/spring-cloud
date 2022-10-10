@@ -1,8 +1,12 @@
 package com.example.service;
 
-import com.example.dto.UserDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+import com.example.dto.UserDto;
+import com.example.vo.User;
+
+public interface UserService extends UserDetailsService {
 
 	UserDto createUser(UserDto userDto);
+	User getUserByEmail(String email);
 }
