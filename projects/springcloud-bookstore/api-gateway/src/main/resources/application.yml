@@ -1,0 +1,60 @@
+# Spring Cloud Gateway의 포트번호 지정
+server:
+  port: 8080
+  
+# Spring Cloud Gateway 애플리케이션을 유레카 서버에 등록시킨다.
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+# Spring Cloud Gateway 애플리케이션의 이름을 gateway-service로 지정한다.      
+spring:
+  application:
+    name: gateway-service
+# Spring Cloud Gateway 라우트 정보를 설정한다.
+  cloud:
+    gateway:
+      routes:
+# 로그인 요청에 대한 라우트 설정이다.
+# POST 방식의 http://localhost:8080/user-service/login 요청에 대한 라우트 설정이다.
+# 이 라우트의 고유한 id는 user-service-login 인다.
+# 이 라우트의 목적지 URI는 lb://USER-SERVICE다. 
+# 이 라우트의 매핑되는 요청경로는 /user-service/login이고, 요청방식은 POST다.
+# 이 라우트에 설정된 필터는 RemoveRequestHeader와 RewritePath 필터다.
+# RemoveRequestHeader는 Request 헤더에 저장된 Cookie 값을 제거한다.
+# RewritePath는 정규표현식을 사용해서 유연하게 HTTP Request Path를 변경한다.
+# RewritePath=/user-service/(?<segment>.*), /$\{segment}는 HTTP Request Path에서 /user-service를 제거한다.
+        - id: user-service-login
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+# 회원가입에 대한 라우트 설정이다.
+# POST 방식의 http://localhost:8080/user-service/users 요청에 대한 라우트 설정이다.
+        - id: user-service-create-user
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+# 위에서 정의한 2가지 라우팅 http://localhost:8080/user-service/login 요청에 대한 라우트 설정이다.
+        - id: user-service-required-authentication
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+                       
+          
+           
+
