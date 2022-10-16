@@ -17,6 +17,8 @@ spring:
 # Spring Cloud Gateway 라우트 정보를 설정한다.
   cloud:
     gateway:
+      default-filters:
+        - name: GlobalLoggingFilter 
       routes:
 # 로그인 요청에 대한 라우트 설정이다.
 # POST 방식의 http://localhost:8080/user-service/login 요청에 대한 라우트 설정이다.
