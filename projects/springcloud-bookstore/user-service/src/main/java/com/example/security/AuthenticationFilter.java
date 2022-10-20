@@ -1,14 +1,16 @@
 package com.example.security;
 
 import java.io.IOException;
-import java.security.Key;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,17 +23,20 @@ import com.example.util.ModelMapperUtil;
 import com.example.vo.RequestLogin;
 import com.example.vo.User;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
-	private UserService userService;
+	private final UserService userService;
+	private final Environment env;
 	
-	public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
+	public AuthenticationFilter(AuthenticationManager authenticationManager, UserService userService, Environment env) {
 		super.setAuthenticationManager(authenticationManager);
 		this.userService = userService;
+		this.env = env;
 	}
 	
 	@Override
@@ -51,14 +56,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		String email = ((UserDetails) authResult.getPrincipal()).getUsername();
 		User user = userService.getUserByEmail(email); 
 		
-		Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+		Claims claims = Jwts.claims();
+		claims.put("id", user.getId());
+		claims.put("role", user.getRole());
+		
+		long expirationTime = Long.parseLong(env.getProperty("security.jwt.token.expiration_time"));
+		String secretString = env.getProperty("security.jwt.token.secret");
+		SecretKey secretKey = Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
+		
 		String token = Jwts.builder()
-				.setSubject(String.valueOf(user.getId()))
-				.setExpiration(new Date(System.currentTimeMillis() + 60*60*24*1000))
-				.signWith(key)
+				.setClaims(claims)
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+				.signWith(secretKey, SignatureAlgorithm.HS256)
 				.compact();
 		
 		response.addHeader("token", token);
-		response.addHeader("userId", String.valueOf(user.getId()));
 	}
 }

@@ -1,5 +1,6 @@
 package com.example.security;
 
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 	
+	private final Environment env;
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	
@@ -31,6 +33,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	}
 	
 	private AuthenticationFilter getAuthenticationFilter() throws Exception {
-		return new AuthenticationFilter(authenticationManager(), userService);
+		return new AuthenticationFilter(authenticationManager(), userService, env);
 	}
 }
