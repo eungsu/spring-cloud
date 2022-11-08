@@ -17,7 +17,7 @@ public class ModelMapperUtil {
 		return modelMapper.map(source, destination);
 	}
 	
-	public static <T> T readValue(InputStream in, Class<? extends T> destination) throws IOException {
+	public static <T> T map(InputStream in, Class<? extends T> destination) throws IOException {
 		return new ObjectMapper().readValue(in, destination);
 	}
 }
